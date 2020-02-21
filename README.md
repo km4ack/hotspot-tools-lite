@@ -1,2 +1,2 @@
-# hotspot-tools
-Collection of tools to manage auto hot spot
+# Hotspot-Tools
+Place holder for upcoming project
