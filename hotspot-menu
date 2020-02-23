@@ -6,13 +6,6 @@
 DIR=$HOME/hotspot-tools
 VER=$(cat $DIR/changelog | grep version= | sed 's/version=//')
 
-clear;echo;echo
-echo "This is ALPHA software"
-echo "Be sure to back up your"
-echo "system before using"
-read -n 1 -s -r -p "Press any key to continue"
-
-
 PS3='Please enter your choice: '
 MAINMENU () {
 
