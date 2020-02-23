@@ -83,7 +83,9 @@ do
        "Update")
 	    echo "checking for updates"
             cd $DIR
-	    git pull && bash setup
+	    git fetch --all
+	    git reset --hard origin/dev
+	    bash setup
   	    sleep 2
 	    MAINMENU
             ;;
