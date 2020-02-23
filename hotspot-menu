@@ -34,10 +34,10 @@ clear;echo
 echo "Hotspot Tools v"$VER" by KM4ACK"
 echo 
 echo "------HOTSPOT PARAMETERS------"
-echo "Status "$HS
-echo "SSID   "$CURRENTNAME
-echo "Passwd "$CURRENTPASS
-echo "IP     "$HSIP  
+echo "   Status   "$HS
+echo "   SSID     "$CURRENTNAME
+echo "   Password "$CURRENTPASS
+echo "   IP Addy  "$HSIP  
 echo "------------------------------"
 echo
 options=("Change Name/Password" "Run Hotspot" "Disable Hotspot" "Enable Hotspot" "Manange IP" "Add WiFi" "Known SSIDs" "Update" "Exit")
