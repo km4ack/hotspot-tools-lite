@@ -2,7 +2,7 @@
 
 #script to disable hotspot
 #20200221
-
+clear;echo;echo
 STATUS=$(systemctl is-active autohotspot)
 if [ $STATUS = 'inactive' ]
 then
@@ -11,6 +11,16 @@ echo "Hotspot already disabled"
 sleep 2
 exit 0
 fi
+
+cat <<EOF
+This will disable the hotspot on the pi.
+It will be as though the hotspot is not
+installed on the system and will restore
+your wifi to normal mode. If the hotspot
+is disabled, you will not be able to
+connect to your pi in the field without
+a keyboard, mouse, and monitor attached.
+EOF
 
 read -p "Are you sure you want to disable the hotspot? y/n " ANS
 if [ $ANS = 'y' ] || [ $ANS = "Y" ]
@@ -31,6 +41,8 @@ read -p "Reboot Now? y/n " ANSW
 sleep 3
 else
 echo
+echo "No changes made"
+sleep 2
 fi
 
 
