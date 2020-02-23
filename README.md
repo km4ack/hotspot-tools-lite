@@ -3,7 +3,7 @@
 # Description
 
 A collection of tools to manage the hotspot on the raspberry pi.
-The hotspot can be installed from https://github.com/km4ack/pi-scripts/blob/master/autohotspotN-setup
+The hotspot can be installed [from here](https://github.com/km4ack/pi-scripts/blob/master/autohotspotN-setup)
 or by using the [Build-a-Pi](https://github.com/km4ack/pi-build) script.
 
 # Install
