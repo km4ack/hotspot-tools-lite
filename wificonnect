@@ -1,0 +1,74 @@
+#!/bin/bash
+
+#script to list available SSID and mod wpa-supplicant
+#file to connect to new wifi hotspot
+#this script works in conjuction with autohotspot
+#http://www.raspberryconnect.com/network/item/330-raspberry-pi-auto-wifi-hotspot-switch-internet
+#km4ack 20190401
+#edited 20200221
+
+mkdir -p $HOME/temp
+TEMPFILE=$HOME/temp/tempwifi
+
+# Generate List of Available SSIDs
+SSID_LIST () {
+LIST=$(sudo iw dev "wlan0" scan ap-force | egrep "^BSS|SSID:" | grep SSID: | sed 's/SSID://' | awk '{ print $1 }' )
+clear;echo;echo
+echo "These SSID's are available"
+echo
+echo "$LIST" | sed '/^$/d'
+#ask user about hotspots
+echo
+echo "1 to refresh the list, 2 to exit or"
+echo "Enter name of SSID would you like add?"
+read SSID
+if [ $SSID == "1" ]
+then
+clear;echo;echo
+echo "Scanning for WiFi again...please wait"
+SSID_LIST
+elif [ $SSID == "2" ]
+then
+echo "Goodbye"
+exit
+fi
+}
+
+#print list on screen
+clear;echo;echo
+echo "Scanning for Wifi.....please wait"
+SSID_LIST
+
+#get SSID password
+echo
+echo "What is the password for the hotspot?"
+read PASS
+
+#verify you want to add the hotspot
+echo
+echo "SSID = "$SSID
+echo "Password = "$PASS
+echo "REMEMBER THIS IS CASE SENSITIVE"
+echo "Is this correct? y/n"
+read ANSWER
+
+#make the change to wpa_supplicant.conf
+if [ $ANSWER == "y" ] || [ $ANSWER == "Y" ]
+then
+cat > $TEMPFILE <<EOF
+network={
+ssid="$SSID"
+psk="$PASS"
+key_mgmt=WPA-PSK
+}
+EOF
+cat $TEMPFILE |sudo tee -a /etc/wpa_supplicant/wpa_supplicant.conf
+rm $TEMPFILE
+echo "attempting to connect to new wifi"
+sudo /usr/bin/autohotspotN
+else
+clear;echo;echo;
+echo "Scanning for WiFi.....please wait"
+SSID_LIST
+fi
+
