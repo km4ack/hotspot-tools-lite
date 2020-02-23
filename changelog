@@ -1,4 +1,7 @@
-version=0.14
+version=0.15
+
+0.15	add logo.png
+	add logo to .desktop file
 
 0.14	change name to SSID in main menu header
 	change PASS to PASSWD in main menu header
