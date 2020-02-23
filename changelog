@@ -1,5 +1,12 @@
-version=0.11
+version=0.12
 
+0.12	add reboot option to hotspotname
+	add hotspot IP to main menu
+	change hotspot status wording on main menu
+	create menu item in setup for main menu
+	add warning message to manageip script
+	add description to disable script
+	bump release #
 0.11	update symlink name
 	bump release #
 0.10	create changelog
