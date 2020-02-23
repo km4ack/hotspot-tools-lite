@@ -1,0 +1,9 @@
+version=0.10
+
+0.10	create changelog
+	create disable hotspot script
+	create enable hotspot script
+	create hotspotname script
+	create manage-ip script 
+	create knowssid script
+	initial commit
