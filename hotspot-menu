@@ -19,6 +19,15 @@ MAINMENU () {
 HS=$(systemctl is-active autohotspot)
 CURRENTNAME=$(sudo cat /etc/hostapd/hostapd.conf | grep ssid= | head -1 | sed 's/ssid=//')
 CURRENTPASS=$(sudo cat /etc/hostapd/hostapd.conf | grep wpa_passphrase= | sed 's/wpa_passphrase=//')
+HSIP=$(cat /usr/bin/autohotspotN | grep "ip a add" | sed 's/ip\ a\ add\ //' | sed 's/\/24.*$//' | tr -d " ")
+
+if [ $HS = 'active' ]
+then
+HS=enabled
+elif [ $HS = 'inactive' ]
+then
+HS=disabled
+fi
 
 
 clear;echo;echo;echo
@@ -26,8 +35,9 @@ echo "Hotspot Tools v"$VER" by KM4ACK"
 echo 
 
 echo "Hotspot Status "$HS
-echo "Hotspot Name "$CURRENTNAME
-echo "Hotspot Pass "$CURRENTPASS
+echo "Hotspot Name   "$CURRENTNAME
+echo "Hotspot Pass   "$CURRENTPASS
+echo "Hotspot IP     "$HSIP  
 echo
 options=("Change Name/Password" "Run Hotspot" "Disable Hotspot" "Enable Hotspot" "Manange IP" "Add WiFi" "Known SSIDs" "Update" "Exit")
 select opt in "${options[@]}"
@@ -38,25 +48,29 @@ do
 	    MAINMENU
             ;;
         "Run Hotspot")
-	    if [ $HS = 'active' ];then
+	    if [ $HS = 'enabled' ];then
 	    echo "Standby......"
 	    sudo /usr/bin/autohotspotN
 	    sleep 4
 	    else
-	    echo "Hotspot is disabled"
+	    echo "Hotspot is disabled. Please enable and try again."
 	    sleep 3
 	    fi
 	    MAINMENU
             ;;
         "Disable Hotspot")
             $DIR/disable
+	    sleep 3
 	    MAINMENU
             ;;
        "Enable Hotspot")
             $DIR/enable
+	    sleep 3
+	    MAINMENU
             ;;
        "Manange IP")
 	    $DIR/manage-ip
+	    MAINMENU
             ;;
        "Add WiFi")
             $DIR/wificonnect
@@ -69,7 +83,7 @@ do
        "Update")
 	    echo "checking for updates"
             cd $DIR
-	    git pull
+	    git pull && bash setup
   	    sleep 2
 	    MAINMENU
             ;;
