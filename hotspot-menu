@@ -1,0 +1,91 @@
+#!/bin/bash
+
+#main menu for hotspot tools
+#20200221 km4ack
+
+DIR=$HOME/hotspot-tools
+VER=$(cat $DIR/changelog | grep version= | sed 's/version=//')
+
+clear;echo;echo
+echo "This is ALPHA software"
+echo "Be sure to back up your"
+echo "system before using"
+read -n 1 -s -r -p "Press any key to continue"
+
+
+PS3='Please enter your choice: '
+MAINMENU () {
+
+HS=$(systemctl is-active autohotspot)
+CURRENTNAME=$(sudo cat /etc/hostapd/hostapd.conf | grep ssid= | head -1 | sed 's/ssid=//')
+CURRENTPASS=$(sudo cat /etc/hostapd/hostapd.conf | grep wpa_passphrase= | sed 's/wpa_passphrase=//')
+
+
+clear;echo;echo;echo
+echo "Hotspot Tools v"$VER" by KM4ACK"
+echo 
+
+echo "Hotspot Status "$HS
+echo "Hotspot Name "$CURRENTNAME
+echo "Hotspot Pass "$CURRENTPASS
+echo
+options=("Change Name/Password" "Run Hotspot" "Disable Hotspot" "Enable Hotspot" "Manange IP" "Add WiFi" "Known SSIDs" "Update" "Exit")
+select opt in "${options[@]}"
+do
+    case $opt in
+        "Change Name/Password")
+            $DIR/hotspotname
+	    MAINMENU
+            ;;
+        "Run Hotspot")
+	    if [ $HS = 'active' ];then
+	    echo "Standby......"
+	    sudo /usr/bin/autohotspotN
+	    sleep 4
+	    else
+	    echo "Hotspot is disabled"
+	    sleep 3
+	    fi
+	    MAINMENU
+            ;;
+        "Disable Hotspot")
+            $DIR/disable
+	    MAINMENU
+            ;;
+       "Enable Hotspot")
+            $DIR/enable
+            ;;
+       "Manange IP")
+	    $DIR/manage-ip
+            ;;
+       "Add WiFi")
+            $DIR/wificonnect
+	    MAINMENU
+            ;;
+       "Known SSIDs")
+            $DIR/knowssid
+	    MAINMENU
+            ;;
+       "Update")
+	    echo "checking for updates"
+            cd $DIR
+	    git pull
+  	    sleep 2
+	    MAINMENU
+            ;;
+        "Exit")
+            exit 0
+            ;;
+        *) echo "invalid option $REPLY";;
+    esac
+done
+}
+
+MAINMENU
+
+
+
+
+
+
+
