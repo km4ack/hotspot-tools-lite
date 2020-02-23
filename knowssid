@@ -1,0 +1,14 @@
+#!/bin/bash
+
+#script to list known ssid's
+#20200222
+
+
+SSID=$(cat /etc/wpa_supplicant/wpa_supplicant.conf | grep ssid= | sed 's/ssid="//' | sed 's/"//')
+clear
+echo;echo
+echo "List of currently known SSID's"
+echo
+echo "$SSID"
+echo
+read -n 1 -s -r -p "Press any key to continue"
