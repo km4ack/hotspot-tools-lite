@@ -1,0 +1,14 @@
+#!/bin/bash
+
+#setup script for hotspot tools
+#20200221 km4ack
+
+DIR=$HOME/hotspot-tools
+
+#move menu file to menu folder
+#chmod all files
+#remove this script
+cd $DIR
+chmod +x disable enable hotspot-menu hotspotname knowssid manage-ip wificonnect
+ln -sf $DIR/hotspot-menu $HOME/Desktop/Hotspot-Menu
+
