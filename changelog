@@ -2,6 +2,7 @@ version=0.13
 
 0.13	work on resolution to update portion of script
 	update README.md
+	change symlink to /usr/local/bin
 	bump release #
 0.12	add reboot option to hotspotname
 	add hotspot IP to main menu
