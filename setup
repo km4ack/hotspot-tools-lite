@@ -10,5 +10,5 @@ DIR=$HOME/hotspot-tools
 #remove this script
 cd $DIR
 chmod +x disable enable hotspot-menu hotspotname knowssid manage-ip wificonnect
-ln -sf $DIR/hotspot-menu $HOME/Desktop/Hotspot-Menu
+ln -sf $DIR/hotspot-menu $HOME/Desktop/Hotspot-Tools
 
