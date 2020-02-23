@@ -42,7 +42,7 @@ PW
 
 if [ -z "$NAME" ] && [ -z "$PASS" ]
 then
-echo;echo
+echo
 echo "Nothing changed"
 sleep 2
 exit
@@ -83,7 +83,11 @@ sleep 1
 	sudo sed -i "s/wpa_passphrase.*$/wpa_passphrase=$PASS/" /etc/hostapd/hostapd.conf
 	fi
 echo "Reboot required before changes are applied"
-sleep 3
+read -p "Reboot Now? y/n " ANSW
+	if [ $ANSW = 'y' ] || [ $ANSW = 'Y' ]
+	then
+	sudo reboot
+	fi
 else
 echo "Nothing Changed"
 sleep 2
