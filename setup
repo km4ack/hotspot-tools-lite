@@ -22,6 +22,7 @@ Name=Hotspot Tools
 GenericName=Tools to Manage AutoHotSpot
 Comment=Tools to Manage AutoHotSpot
 Exec=/usr/local/bin/Hotspot-Tools
+icon=~/hotspot-tools/logo.png
 Terminal=true
 Type=Application
 Categories=Network;HamRadio;
