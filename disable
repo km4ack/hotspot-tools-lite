@@ -1,0 +1,36 @@
+#!/bin/bash
+
+#script to disable hotspot
+#20200221
+
+STATUS=$(systemctl is-active autohotspot)
+if [ $STATUS = 'inactive' ]
+then
+echo
+echo "Hotspot already disabled"
+sleep 2
+exit 0
+fi
+
+read -p "Are you sure you want to disable the hotspot? y/n " ANS
+if [ $ANS = 'y' ] || [ $ANS = "Y" ]
+then
+echo "Disabling hotspot"
+sleep 1
+sudo systemctl disable autohotspot
+
+sudo sed -i 's/nohook\ wpa_supplicant//g' /etc/dhcpcd.conf
+
+echo "Reboot required to apply changes"
+echo
+read -p "Reboot Now? y/n " ANSW
+	if [ $ANSW = 'y' ] || [ $ANSW = 'Y' ]
+	then
+	sudo reboot
+	fi
+sleep 3
+else
+echo
+fi
+
+
