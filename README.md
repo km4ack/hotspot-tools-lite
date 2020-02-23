@@ -2,10 +2,13 @@
 
 # Install
 
-git clone https://github.com/km4ack/hotspot-tools.git $HOME/hotspot-tools 
-cd ~/hotspot-tools
-git checkout dev
-bash setup
+     git clone https://github.com/km4ack/hotspot-tools.git $HOME/hotspot-tools 
+
+     cd ~/hotspot-tools
+
+     git checkout dev
+
+     bash setup
 
 # Tools in Script
 
