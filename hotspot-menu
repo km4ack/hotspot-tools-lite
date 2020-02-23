@@ -30,14 +30,15 @@ HS=disabled
 fi
 
 
-clear;echo;echo;echo
+clear;echo
 echo "Hotspot Tools v"$VER" by KM4ACK"
 echo 
-
-echo "Hotspot Status "$HS
-echo "Hotspot Name   "$CURRENTNAME
-echo "Hotspot Pass   "$CURRENTPASS
-echo "Hotspot IP     "$HSIP  
+echo "------HOTSPOT PARAMETERS------"
+echo "Status "$HS
+echo "SSID   "$CURRENTNAME
+echo "Passwd "$CURRENTPASS
+echo "IP     "$HSIP  
+echo "------------------------------"
 echo
 options=("Change Name/Password" "Run Hotspot" "Disable Hotspot" "Enable Hotspot" "Manange IP" "Add WiFi" "Known SSIDs" "Update" "Exit")
 select opt in "${options[@]}"
