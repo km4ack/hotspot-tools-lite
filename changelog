@@ -1,5 +1,7 @@
-version=0.10
+version=0.11
 
+0.11	update symlink name
+	bump release #
 0.10	create changelog
 	create disable hotspot script
 	create enable hotspot script
