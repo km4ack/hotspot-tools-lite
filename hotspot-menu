@@ -87,6 +87,7 @@ do
 	    git fetch --all
 	    git reset --hard origin/dev
 	    bash setup
+	    echo "Please restart HotSpot-Tools script to see changes."
   	    sleep 2
 	    MAINMENU
             ;;
