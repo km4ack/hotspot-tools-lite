@@ -11,7 +11,7 @@ DIR=$HOME/hotspot-tools
 cd $DIR
 chmod +x disable enable hotspot-menu hotspotname knowssid manage-ip wificonnect
 #create symlink in bin folder to use in pi main menu
-ln -sf $DIR/hotspot-menu $HOME/bin/Hotspot-Tools
+ln -sf $DIR/hotspot-menu /usr/local/bin/Hotspot-Tools
 #create symlink on desktop
 ln -sf $DIR/hotspot-menu $HOME/Desktop/Hotspot-Tools
 
@@ -21,7 +21,7 @@ cat > hotspot-tools.desktop <<EOF
 Name=Hotspot Tools
 GenericName=Tools to Manage AutoHotSpot
 Comment=Tools to Manage AutoHotSpot
-Exec=$HOME/bin/Hotspot-Tools
+Exec=usr/local/bin/Hotspot-Tools
 Terminal=true
 Type=Application
 Categories=Network;HamRadio;
