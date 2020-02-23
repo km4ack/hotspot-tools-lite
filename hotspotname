@@ -1,0 +1,101 @@
+#!/bin/bash
+
+#script to change wifi hotspot name when
+#autohotspot has been installed
+#20200221 km4ack
+
+CURRENTNAME=$(sudo cat /etc/hostapd/hostapd.conf | grep ssid= | head -1 | sed 's/ssid=//')
+CURRENTPASS=$(sudo cat /etc/hostapd/hostapd.conf | grep wpa_passphrase= | sed 's/wpa_passphrase=//')
+
+
+
+clear;echo;echo
+echo "Current Hotspot Info"
+echo "SSID Name " $CURRENTNAME
+echo "Password  " $CURRENTPASS
+echo
+
+PW () {
+echo;echo
+read -p "Would you like to change the hotspot name? y/n " NAMEANS
+if [ $NAMEANS = 'y' ] || [ $NAMEANS = 'Y' ]
+then
+read -p "What do you want the new name to be? " NAME
+fi
+echo
+read -p "Would you like to change the password? y/n " PASSANS
+if [ $PASSANS = 'y' ] || [ $PASSANS = 'Y' ]
+then
+read -p "What password would you like to use? " PASS
+COUNT=${#PASS}
+	if [ $COUNT -lt 8 ]
+	then
+	echo "Password must be at least 8 characters long"
+	echo "Please try again"
+	sleep 3
+	PW
+	fi
+fi
+}
+
+PW
+
+if [ -z "$NAME" ] && [ -z "$PASS" ]
+then
+echo;echo
+echo "Nothing changed"
+sleep 2
+exit
+fi
+
+if [ $NAMEANS = 'y' ] || [ $NAMEANS = 'Y' ]
+then
+echo "New Name="$NAME
+fi
+
+if [ $PASSANS = 'y' ] || [ $PASSANS = 'Y' ]
+then
+echo "New Password="$PASS
+fi
+
+read -p "Is this correct? y/n " ANS
+if [ $ANS = 'y' ] || [ $ANS = 'Y' ]
+then
+echo "Making Changes"
+sleep 1
+	if [ -z "$NAME" ]
+	then
+	echo "Name Unchanged"
+	sleep 1
+	else
+	echo "Updating name"
+	sleep 1
+	sudo sed -i "s/^ssid=.*$/ssid=$NAME/" /etc/hostapd/hostapd.conf
+	fi
+
+	if [ -z "$PASS" ]
+	then 
+	echo "Password Unchanged"
+	sleep 1
+	else
+	echo "Updating password"
+	sleep 1
+	sudo sed -i "s/wpa_passphrase.*$/wpa_passphrase=$PASS/" /etc/hostapd/hostapd.conf
+	fi
+echo "Reboot required before changes are applied"
+sleep 3
+else
+echo "Nothing Changed"
+sleep 2
+fi
+
+
+
+
+
+
+
+
+
+
+
