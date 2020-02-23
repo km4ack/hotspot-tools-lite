@@ -1,5 +1,7 @@
-version=0.12
+version=0.13
 
+0.13	work on resolution to update portion of script
+	bump release #
 0.12	add reboot option to hotspotname
 	add hotspot IP to main menu
 	change hotspot status wording on main menu
