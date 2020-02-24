@@ -9,10 +9,10 @@
 
 mkdir -p $HOME/temp
 TEMPFILE=$HOME/temp/tempwifi
-
+ADD () {
 # Generate List of Available SSIDs
 SSID_LIST () {
-LIST=$(sudo iw dev "wlan0" scan ap-force | egrep "^BSS|SSID:" | grep SSID: | sed 's/SSID://' | awk '{ print $1 }' )
+LIST=$(iw dev "wlan0" scan ap-force | egrep "^BSS|SSID:" | grep SSID: | sed 's/SSID://' | awk '{ print $1 }' )
 clear;echo;echo
 echo "These SSID's are available"
 echo
@@ -62,13 +62,83 @@ psk="$PASS"
 key_mgmt=WPA-PSK
 }
 EOF
-cat $TEMPFILE |sudo tee -a /etc/wpa_supplicant/wpa_supplicant.conf
+cat $TEMPFILE | tee -a /etc/wpa_supplicant/wpa_supplicant.conf
 rm $TEMPFILE
 echo "attempting to connect to new wifi"
-sudo /usr/bin/autohotspotN
+ /usr/bin/autohotspotN
 else
 clear;echo;echo;
 echo "Scanning for WiFi.....please wait"
 SSID_LIST
 fi
+}
+
+SUBTRACT () {
+SSID=$(cat /etc/wpa_supplicant/wpa_supplicant.conf | grep ssid= | sed 's/ssid="//' | sed 's/"//')
+clear
+echo;echo
+echo "List of currently known SSID's"
+echo
+echo "$SSID"
+echo;echo
+read -p "Name of SSID to remove or exit to quit " RSSID
+if [ $RSSID = 'exit' ]
+then
+exit 0
+fi
+file="/etc/wpa_supplicant/wpa_supplicant.conf"
+foo="$(cat "$file" | awk -v RSSID="$RSSID" '$0 ~ RSSID { flag=1 }; flag==0 { print $0 }; /network={/ { flag=0 }' )"
+if echo -e "$foo" | tail -1 | grep -q 'network={'; then
+   foo=$(echo -e "$foo" | head -n -1)
+fi
+#cat $foo | tee /etc/wpa_supplicant/wpa_supplicant.conf
+echo -e "$foo" > "$file"
+echo
+echo $RSSID" has been removed"
+sleep 2
+}
+
+CHOICES() {
+clear;echo;echo
+echo "Manage SSID's on the Pi"
+echo;echo
+echo "1 to remove WiFi"
+echo "2 to add WiFi"
+echo "3 to exit"
+read ANS
+
+if [ $ANS = '1' ]
+then
+SUBTRACT
+elif [ $ANS = '2' ]
+then
+ADD
+elif [ $ANS = '3' ]
+then
+exit 0
+else
+echo "No such option. Try again"
+sleep 1
+CHOICES
+fi
+}
+
+CHOICES
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
