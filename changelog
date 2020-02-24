@@ -1,5 +1,9 @@
-version=0.17
+version=0.18
 
+0.18	add press any key at end of update
+	add runhs script
+	mod main menu to use runhs instead of running hotspot direct
+	bump release #
 0.17	remove spaces in knowssid if exist
 	fix typo addy to addr
 	add hotspot status menu to knownssid script
