@@ -30,7 +30,7 @@ echo "------HOTSPOT PARAMETERS------"
 echo "   Status   "$HS
 echo "   SSID     "$CURRENTNAME
 echo "   Password "$CURRENTPASS
-echo "   IP Addy  "$HSIP  
+echo "   IP Addr  "$HSIP  
 echo "------------------------------"
 echo
 options=("Change Name/Password" "Run Hotspot" "Disable Hotspot" "Enable Hotspot" "Manage IP" "Manage SSIDs" "Known SSIDs" "Update" "Exit")
