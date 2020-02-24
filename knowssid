@@ -3,10 +3,34 @@
 #script to list known ssid's
 #20200222
 
+DIR=$HOME/hotspot-tools
+VER=$(cat $DIR/changelog | grep version= | sed 's/version=//')
+HS=$(systemctl is-active autohotspot)
+CURRENTNAME=$(sudo cat /etc/hostapd/hostapd.conf | grep ssid= | head -1 | sed 's/ssid=//')
+CURRENTPASS=$(sudo cat /etc/hostapd/hostapd.conf | grep wpa_passphrase= | sed 's/wpa_passphrase=//')
+HSIP=$(cat /usr/bin/autohotspotN | grep "ip a add" | sed 's/ip\ a\ add\ //' | sed 's/\/24.*$//' | tr -d " ")
 
-SSID=$(cat /etc/wpa_supplicant/wpa_supplicant.conf | grep ssid= | sed 's/ssid="//' | sed 's/"//')
-clear
-echo;echo
+if [ $HS = 'active' ]
+then
+HS=enabled
+elif [ $HS = 'inactive' ]
+then
+HS=disabled
+fi
+
+
+clear;echo
+echo "Hotspot Tools v"$VER" by KM4ACK"
+echo 
+echo "------HOTSPOT PARAMETERS------"
+echo "   Status   "$HS
+echo "   SSID     "$CURRENTNAME
+echo "   Password "$CURRENTPASS
+echo "   IP Addr  "$HSIP  
+echo "------------------------------"
+
+SSID=$(sudo cat /etc/wpa_supplicant/wpa_supplicant.conf | grep ssid= | sed 's/ssid="//' | sed 's/"//')
+echo
 echo "List of currently known SSID's"
 echo
 echo "$SSID" | tr -d "[:blank:]"
