@@ -9,6 +9,6 @@ clear
 echo;echo
 echo "List of currently known SSID's"
 echo
-echo "$SSID"
+echo "$SSID" | tr -d "[:blank:]"
 echo
 read -n 1 -s -r -p "Press any key to continue"
