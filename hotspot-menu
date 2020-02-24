@@ -33,7 +33,7 @@ echo "   Password "$CURRENTPASS
 echo "   IP Addy  "$HSIP  
 echo "------------------------------"
 echo
-options=("Change Name/Password" "Run Hotspot" "Disable Hotspot" "Enable Hotspot" "Manange IP" "Add WiFi" "Known SSIDs" "Update" "Exit")
+options=("Change Name/Password" "Run Hotspot" "Disable Hotspot" "Enable Hotspot" "Manage IP" "Manage SSIDs" "Known SSIDs" "Update" "Exit")
 select opt in "${options[@]}"
 do
     case $opt in
@@ -62,12 +62,12 @@ do
 	    sleep 3
 	    MAINMENU
             ;;
-       "Manange IP")
+       "Manage IP")
 	    $DIR/manage-ip
 	    MAINMENU
             ;;
-       "Add WiFi")
-            $DIR/wificonnect
+       "Manage SSIDs")
+            sudo $DIR/wificonnect
 	    MAINMENU
             ;;
        "Known SSIDs")
