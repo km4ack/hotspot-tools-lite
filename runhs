@@ -1,0 +1,44 @@
+#!/bin/bash
+
+#echo "please stand by"
+echo "This can take up to"
+echo "30 seconds to complete"
+RUNHS=$(sudo /usr/bin/autohotspotN)
+
+CONNECT=$(echo $RUNHS | grep -i "wifi already connected")
+ALREADY=$(echo $RUNHS | grep -i "hostspot already active")
+CREATING=$(echo $RUNHS | grep -i "creating hotspot")
+BRING=$(echo $RUNHS | grep -i "Bringing wifi up")
+
+if [ -z "$CONNECT" ]
+then
+echo
+else
+echo "WiFi Already Connected"
+sleep 3
+fi
+
+if [ -z "$ALREADY" ]
+then
+echo
+else
+echo "No known SSID found"
+echo "Hotspot is already active"
+sleep 3
+fi
+
+if [ -z "$CREATING" ]
+then
+echo
+else 
+echo "Creating hotspot"
+sleep 3
+fi
+
+if [ -z "$BRING" ]
+then
+echo
+else
+echo "Bringing WiFi up"
+sleep 3
+fi
