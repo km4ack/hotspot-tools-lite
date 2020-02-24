@@ -1,8 +1,12 @@
-version=0.16
+version=0.17
 
+0.17	remove spaces in knowssid if exist
+	fix typo addy to addr
+	add hotspot status menu to knownssid script
+	bump release #
 0.16	rename add wifi to manage wifi in menu
 	add remove wifi to manage wifi section
-
+	bump release #
 0.15	add logo.png
 	add logo to .desktop file
 	remove warning at beginning of script
