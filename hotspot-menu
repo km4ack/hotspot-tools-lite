@@ -44,8 +44,9 @@ do
         "Run Hotspot")
 	    if [ $HS = 'enabled' ];then
 	    echo "Standby......"
-	    sudo /usr/bin/autohotspotN
-	    sleep 4
+	    $DIR/runhs
+	    #sudo /usr/bin/autohotspotN
+	    #sleep 4
 	    else
 	    echo "Hotspot is disabled. Please enable and try again."
 	    sleep 3
@@ -81,7 +82,7 @@ do
 	    git reset --hard origin/dev
 	    bash setup
 	    echo "Please restart HotSpot-Tools script to see changes."
-  	    sleep 2
+  	    read -n 1 -s -r -p "Press any key to continue"
 	    MAINMENU
             ;;
         "Exit")
