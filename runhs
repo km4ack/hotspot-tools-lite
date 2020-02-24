@@ -10,35 +10,27 @@ ALREADY=$(echo $RUNHS | grep -i "hostspot already active")
 CREATING=$(echo $RUNHS | grep -i "creating hotspot")
 BRING=$(echo $RUNHS | grep -i "Bringing wifi up")
 
-if [ -z "$CONNECT" ]
+if [ -n "$CONNECT" ]
 then
-echo
-else
 echo "WiFi Already Connected"
 sleep 3
 fi
 
-if [ -z "$ALREADY" ]
+if [ -n "$ALREADY" ]
 then
-echo
-else
 echo "No known SSID found"
 echo "Hotspot is already active"
 sleep 3
 fi
 
-if [ -z "$CREATING" ]
+if [ -n "$CREATING" ]
 then
-echo
-else 
 echo "Creating hotspot"
 sleep 3
 fi
 
-if [ -z "$BRING" ]
+if [ -n "$BRING" ]
 then
-echo
-else
 echo "Bringing WiFi up"
 sleep 3
 fi
