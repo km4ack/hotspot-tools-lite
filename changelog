@@ -1,5 +1,9 @@
-version=0.19
+version=0.20
 
+0.20	add dhcp script
+	add dhcp to main menu
+	backup warning added to main menu	#####REMOVE AFTER TESTING#####
+	bump release #
 0.19	add hotspot state to main menu
 	bump release #
 0.18	add press any key at end of update
