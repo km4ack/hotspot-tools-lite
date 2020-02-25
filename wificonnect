@@ -9,6 +9,7 @@
 
 mkdir -p $HOME/temp
 TEMPFILE=$HOME/temp/tempwifi
+
 ADD () {
 # Generate List of Available SSIDs
 SSID_LIST () {
@@ -82,10 +83,25 @@ echo
 echo "$SSID"
 echo;echo
 read -p "Name of SSID to remove or exit to quit " RSSID
+
 if [ $RSSID = 'exit' ]
 then
 exit 0
 fi
+
+EXIST=$(echo $SSID | grep $RSSID)
+if [ -z "$EXIST" ]
+then
+cat <<EOF
+That wifi doesn't exist on the pi.
+Please check spelling and try again.
+Remember that your answer is case
+sensitive
+EOF
+sleep 5
+exit 1
+fi
+
 file="/etc/wpa_supplicant/wpa_supplicant.conf"
 foo="$(cat "$file" | awk -v RSSID="$RSSID" '$0 ~ RSSID { flag=1 }; flag==0 { print $0 }; /network={/ { flag=0 }' )"
 if echo -e "$foo" | tail -1 | grep -q 'network={'; then
