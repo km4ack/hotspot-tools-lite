@@ -1,5 +1,8 @@
-version=0.20
+version=0.21
 
+0.21	verify SSID exists before removing
+	add additional check to dhcp script before flush
+	bump release #
 0.20	add dhcp script
 	add dhcp to main menu
 	backup warning added to main menu	#####REMOVE AFTER TESTING#####
