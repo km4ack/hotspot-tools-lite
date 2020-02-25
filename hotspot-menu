@@ -13,13 +13,22 @@ HS=$(systemctl is-active autohotspot)
 CURRENTNAME=$(sudo cat /etc/hostapd/hostapd.conf | grep ssid= | head -1 | sed 's/ssid=//')
 CURRENTPASS=$(sudo cat /etc/hostapd/hostapd.conf | grep wpa_passphrase= | sed 's/wpa_passphrase=//')
 HSIP=$(cat /usr/bin/autohotspotN | grep "ip a add" | sed 's/ip\ a\ add\ //' | sed 's/\/24.*$//' | tr -d " ")
+HSS=$(cat /usr/bin/autohotspotN | grep "ip a add" | awk '{ print $4 }' | sed 's/\/24//')
+CIP=$(ifconfig | grep -A 1 wlan0 | grep inet | awk '{ print $2 }')
+
+if [ $HSS = $CIP ]
+then
+HSS=ACTIVE
+else
+HSS=INACTIVE
+fi
 
 if [ $HS = 'active' ]
 then
-HS=enabled
+HS=Enabled
 elif [ $HS = 'inactive' ]
 then
-HS=disabled
+HS=Disabled
 fi
 
 
@@ -28,6 +37,7 @@ echo "Hotspot Tools v"$VER" by KM4ACK"
 echo 
 echo "------HOTSPOT PARAMETERS------"
 echo "   Status   "$HS
+echo "   State    "$HSS
 echo "   SSID     "$CURRENTNAME
 echo "   Password "$CURRENTPASS
 echo "   IP Addr  "$HSIP  
