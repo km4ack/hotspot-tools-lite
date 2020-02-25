@@ -1,5 +1,7 @@
-version=0.18
+version=0.19
 
+0.19	add hotspot state to main menu
+	bump release #
 0.18	add press any key at end of update
 	add runhs script
 	mod main menu to use runhs instead of running hotspot direct
