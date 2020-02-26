@@ -17,7 +17,7 @@ fi
 
 clear;echo;echo
 echo "List of Current DHCP Addresses"
-echo $DHCP | awk '{ print $3" "$4" "$5 }'
+echo "$DHCP" | awk '{ print $3" "$4" "$5 }'
 echo;echo
 read -p "Flush DHCP Leases? y/n " ANS
 if [ $HSS = 'ACTIVE' ] && [ $ANS = 'y' ] || [ $ANS = 'Y' ]
