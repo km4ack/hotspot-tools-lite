@@ -1,5 +1,7 @@
-version=0.22
+version=0.23
 
+0.23	remove backup warning at beginning of script
+	bump release #
 0.22	fix DHCP not showing all leases
 	change to wificonncect as to what it does after add new SSID
 	bump release #
@@ -8,7 +10,7 @@ version=0.22
 	bump release #
 0.20	add dhcp script
 	add dhcp to main menu
-	backup warning added to main menu			#####REMOVE AFTER TESTING#####
+	backup warning added to main menu
 	bump release #
 0.19	add hotspot state to main menu
 	bump release #
