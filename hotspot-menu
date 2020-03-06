@@ -3,15 +3,6 @@
 #main menu for hotspot tools
 #20200221 km4ack
 
-cat <<EOF
-New DHCP feature added. Please
-remember to back up your pi before
-trying to flush the DHCP leases.
-THANK YOU for testing this script
-and for the feedback you have given
-EOF
-read -n 1 -s -r -p "Press any key to continue"
-
 DIR=$HOME/hotspot-tools
 VER=$(cat $DIR/changelog | grep version= | sed 's/version=//')
 
