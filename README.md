@@ -12,8 +12,6 @@ or by using the [Build-a-Pi](https://github.com/km4ack/pi-build) script.
 
      cd ~/hotspot-tools
 
-     git checkout dev
-
      bash setup
 
 # Tools in Script
