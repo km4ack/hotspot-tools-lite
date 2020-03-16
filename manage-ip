@@ -1,0 +1,76 @@
+#!/bin/bash
+
+#script to modify the hotspot IP address
+#and the range of ip addresses assigned
+#by the hotspot DHCP server
+#20200223 km4ack
+
+clear
+cat <<EOF
+This is a very experimental section of the script.
+It is advised to backup your system before running
+this section. This will modify your hotspot IP 
+address and modify the IP address range that the 
+hotspot DHCP server will assign to device that
+connect to the hotspot. Some people have had issues
+with the hotspot and internet connections. I am
+not an networking guy but I believe this might be
+helpful to those that are having issues with internet
+connectivity.
+EOF
+read -p "Would you like to continue? y/n " CONT
+if [ $CONT = 'y' ] || [ $CONT = 'Y' ]
+then
+echo
+else 
+exit 0
+fi
+
+if [ ! -f /usr/bin/autohotspotN.bkup ]
+then
+sudo cp /usr/bin/autohotspotN /usr/bin/autohotspotN.bkup
+echo "backup created"
+else
+echo "hotspot backup already exists"
+sleep 1
+fi
+
+if [ ! -f /etc/dnsmasq.conf.bkup ]
+then
+sudo cp /etc/dnsmasq.conf /etc/dnsmasq.conf.bkup
+echo "backup created"
+else
+echo "dnsmasq backup already exists"
+sleep 1
+fi
+
+clear
+
+echo "What are the first two sets of numbers for"
+echo "your network? ex 192.168"
+read IP
+
+echo "You entered "$IP
+read -p "Is this correct? y/n/exit " ANS
+
+if [ $ANS = 'y' ] || [ $ANS = 'Y' ]
+then
+#set new ip for autohotspotN
+sudo cp /usr/bin/autohotspotN.bkup /usr/bin/autohotspotN
+sudo sed -i "s/10.10.10.10/$IP.10.10/" /usr/bin/autohotspotN
+#set new ip for dnsmasq.conf
+sudo cp /etc/dnsmasq.conf.bkup /etc/dnsmasq.conf
+sudo sed -i "s/dhcp-range=10.*$/dhcp-range=$IP.10.150,$IP.10.200,255.255.255.0,12h/" /etc/dnsmasq.conf
+sudo sed -i "s/dhcp-option=3,10.10.10.10/dhcp-option=3,$IP.10.10/" /etc/dnsmasq.conf
+sudo sed -i "s/address=\/email.com\/10.10.10.10/address=\/email.com\/$IP.10.10/" /etc/dnsmasq.conf
+elif [ $ANS = 'exit' ] || [ $ANS = 'EXIT' ]
+then
+exit 0
+else
+exit 0
+fi
+
+echo "After connecting to your hotspot wifi"
+echo "use IP address "$IP".10.10 in VNC to connect"
+echo "Reboot required to apply changes"
+read -n 1 -s -r -p "Press any key to continue"

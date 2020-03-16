@@ -1,0 +1,117 @@
+#!/bin/bash
+
+#main menu for hotspot tools
+#20200221 km4ack
+
+DIR=$HOME/hotspot-tools
+VER=$(cat $DIR/changelog | grep version= | sed 's/version=//')
+
+PS3='Please enter your choice: '
+MAINMENU () {
+
+HS=$(systemctl is-active autohotspot)
+CURRENTNAME=$(sudo cat /etc/hostapd/hostapd.conf | grep ssid= | head -1 | sed 's/ssid=//')
+CURRENTPASS=$(sudo cat /etc/hostapd/hostapd.conf | grep wpa_passphrase= | sed 's/wpa_passphrase=//')
+HSIP=$(cat /usr/bin/autohotspotN | grep "ip a add" | sed 's/ip\ a\ add\ //' | sed 's/\/24.*$//' | tr -d " ")
+HSS=$(cat /usr/bin/autohotspotN | grep "ip a add" | awk '{ print $4 }' | sed 's/\/24//')
+CIP=$(ifconfig | grep -A 1 wlan0 | grep inet | awk '{ print $2 }')
+
+if [ $HSS = $CIP ]
+then
+HSS=ACTIVE
+else
+HSS=INACTIVE
+fi
+
+if [ $HS = 'active' ]
+then
+HS=Enabled
+elif [ $HS = 'inactive' ]
+then
+HS=Disabled
+fi
+
+
+clear;echo
+echo "Hotspot Tools v"$VER" by KM4ACK"
+echo 
+echo "------HOTSPOT PARAMETERS------"
+echo "   Status   "$HS
+echo "   State    "$HSS
+echo "   SSID     "$CURRENTNAME
+echo "   Password "$CURRENTPASS
+echo "   IP Addr  "$HSIP  
+echo "------------------------------"
+echo
+options=("Change Name/Password" "Run Hotspot" "Disable Hotspot" "Enable Hotspot" "Manage IP" "Manage SSIDs" "Known SSIDs" "DHCP List" "Update" "Exit")
+select opt in "${options[@]}"
+do
+    case $opt in
+        "Change Name/Password")
+            $DIR/hotspotname
+	    MAINMENU
+            ;;
+        "Run Hotspot")
+	    if [ $HS = 'Enabled' ];then
+	    echo "Standby......"
+	    $DIR/runhs
+	    #sudo /usr/bin/autohotspotN
+	    #sleep 4
+	    else
+	    echo "Hotspot is disabled. Please enable and try again."
+	    sleep 3
+	    fi
+	    MAINMENU
+            ;;
+        "Disable Hotspot")
+            $DIR/disable
+	    sleep 3
+	    MAINMENU
+            ;;
+       "Enable Hotspot")
+            $DIR/enable
+	    sleep 3
+	    MAINMENU
+            ;;
+       "Manage IP")
+	    $DIR/manage-ip
+	    MAINMENU
+            ;;
+       "Manage SSIDs")
+            sudo $DIR/wificonnect
+	    MAINMENU
+            ;;
+       "Known SSIDs")
+            $DIR/knowssid
+	    MAINMENU
+            ;;
+       "DHCP List")
+            $DIR/dhcp
+	    MAINMENU
+            ;;
+       "Update")
+	    echo "checking for updates"
+            cd $DIR
+	    git fetch --all
+	    git reset --hard origin/dev
+	    bash setup
+	    echo "Please restart HotSpot-Tools script to see changes."
+  	    read -n 1 -s -r -p "Press any key to continue"
+	    MAINMENU
+            ;;
+        "Exit")
+            exit 0
+            ;;
+        *) echo "invalid option $REPLY";;
+    esac
+done
+}
+
+MAINMENU
+
+
+
+
+
+
+

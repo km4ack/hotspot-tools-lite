@@ -1,0 +1,176 @@
+#!/bin/bash
+
+#script to list available SSID and mod wpa-supplicant
+#file to connect to new wifi hotspot
+#this script works in conjuction with autohotspot
+#http://www.raspberryconnect.com/network/item/330-raspberry-pi-auto-wifi-hotspot-switch-internet
+#km4ack 20190401
+#edited 20200221
+
+mkdir -p $HOME/temp
+TEMPFILE=$HOME/temp/tempwifi
+HS=$(systemctl is-active autohotspot)
+if [ $HS = 'active' ]
+then
+HSS=ACTIVE
+else
+HSS=INACTIVE
+fi
+
+ADD () {
+# Generate List of Available SSIDs
+SSID_LIST () {
+LIST=$(iw dev "wlan0" scan ap-force | egrep "^BSS|SSID:" | grep SSID: | sed 's/SSID://' | awk '{ print $1 }' )
+clear;echo;echo
+echo "These SSID's are available"
+echo
+echo "$LIST" | sed '/^$/d'
+#ask user about hotspots
+echo
+echo "1 to refresh the list, 2 to exit or"
+echo "Enter name of SSID would you like add?"
+read SSID
+if [ $SSID == "1" ]
+then
+clear;echo;echo
+echo "Scanning for WiFi again...please wait"
+SSID_LIST
+elif [ $SSID == "2" ]
+then
+echo "Goodbye"
+exit
+fi
+}
+
+#print list on screen
+clear;echo;echo
+echo "Scanning for Wifi.....please wait"
+SSID_LIST
+
+#get SSID password
+echo
+echo "What is the password for the hotspot?"
+read PASS
+
+#verify you want to add the hotspot
+echo
+echo "SSID = "$SSID
+echo "Password = "$PASS
+echo "REMEMBER THIS IS CASE SENSITIVE"
+echo "Is this correct? y/n"
+read ANSWER
+
+#make the change to wpa_supplicant.conf
+if [ $ANSWER == "y" ] || [ $ANSWER == "Y" ]
+then
+cat > $TEMPFILE <<EOF
+network={
+ssid="$SSID"
+psk="$PASS"
+key_mgmt=WPA-PSK
+}
+EOF
+cat $TEMPFILE | tee -a /etc/wpa_supplicant/wpa_supplicant.conf
+rm $TEMPFILE
+	if [ $HSS = 'ACTIVE' ]
+	then
+	echo "attempting to connect to new wifi"
+	/usr/bin/autohotspotN
+	elif [ $HSS = 'INACTIVE' ]
+	then
+	killall wpa_supplicant
+	sleep 1
+	wpa_supplicant -B -i wlan0 -c /etc/wpa_supplicant/wpa_supplicant.conf
+	sleep 2
+	fi
+else
+clear;echo;echo;
+echo "Scanning for WiFi.....please wait"
+SSID_LIST
+fi
+}
+
+SUBTRACT () {
+SSID=$(cat /etc/wpa_supplicant/wpa_supplicant.conf | grep ssid= | sed 's/ssid="//' | sed 's/"//')
+clear
+echo;echo
+echo "List of currently known SSID's"
+echo
+echo "$SSID"
+echo;echo
+read -p "Name of SSID to remove or exit to quit " RSSID
+
+if [ $RSSID = 'exit' ]
+then
+exit 0
+fi
+
+EXIST=$(echo $SSID | grep $RSSID)
+if [ -z "$EXIST" ]
+then
+cat <<EOF
+That wifi doesn't exist on the pi.
+Please check spelling and try again.
+Remember that your answer is case
+sensitive
+EOF
+sleep 5
+exit 1
+fi
+
+file="/etc/wpa_supplicant/wpa_supplicant.conf"
+foo="$(cat "$file" | awk -v RSSID="$RSSID" '$0 ~ RSSID { flag=1 }; flag==0 { print $0 }; /network={/ { flag=0 }' )"
+if echo -e "$foo" | tail -1 | grep -q 'network={'; then
+   foo=$(echo -e "$foo" | head -n -1)
+fi
+#cat $foo | tee /etc/wpa_supplicant/wpa_supplicant.conf
+echo -e "$foo" > "$file"
+echo
+echo $RSSID" has been removed"
+sleep 2
+}
+
+CHOICES() {
+clear;echo;echo
+echo "Manage SSID's on the Pi"
+echo;echo
+echo "1 to remove WiFi"
+echo "2 to add WiFi"
+echo "3 to exit"
+read ANS
+
+if [ $ANS = '1' ]
+then
+SUBTRACT
+elif [ $ANS = '2' ]
+then
+ADD
+elif [ $ANS = '3' ]
+then
+exit 0
+else
+echo "No such option. Try again"
+sleep 1
+CHOICES
+fi
+}
+
+CHOICES
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

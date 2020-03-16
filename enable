@@ -1,0 +1,37 @@
+#!/bin/bash
+
+
+#enable hotspot that is installed but disabled
+#20200221 km4ack
+
+#check if already active
+STATUS=$(systemctl is-active autohotspot)
+if [ $STATUS = "active" ]
+then
+echo "Hotspot already active"
+sleep 2
+exit 0
+fi
+
+echo
+read -p "Enable hotspot? y/n " ANS
+if [ $ANS = 'y' ] || [ $ANS = 'Y' ]
+then
+sudo systemctl enable autohotspot
+
+sudo echo "nohook wpa_supplicant" >> /etc/dhcpcd.conf
+
+echo "Hotspot Enabled"
+echo "Reboot required to apply changes"
+read -p "Reboot Now? y/n " ANSW
+	if [ $ANSW = 'y' ] || [ $ANSW = 'Y' ]
+	then
+	sudo reboot
+	fi
+sleep 2
+else
+echo
+echo "Nothing Changed"
+sleep 2
+exit 0
+fi

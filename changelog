@@ -1,0 +1,55 @@
+version=0.23
+
+	inital pull request to main branch 20200316 km4ack
+0.23	remove backup warning at beginning of script
+	bump release #
+0.22	fix DHCP not showing all leases
+	change to wificonncect as to what it does after add new SSID
+	bump release #
+0.21	verify SSID exists before removing
+	add additional check to dhcp script before flush
+	bump release #
+0.20	add dhcp script
+	add dhcp to main menu
+	backup warning added to main menu
+	bump release #
+0.19	add hotspot state to main menu
+	bump release #
+0.18	add press any key at end of update
+	add runhs script
+	mod main menu to use runhs instead of running hotspot direct
+	bump release #
+0.17	remove spaces in knowssid if exist
+	fix typo addy to addr
+	add hotspot status menu to knownssid script
+	bump release #
+0.16	rename add wifi to manage wifi in menu
+	add remove wifi to manage wifi section
+	bump release #
+0.15	add logo.png
+	add logo to .desktop file
+	remove warning at beginning of script
+	bump release #
+0.14	change name to SSID in main menu header
+	change PASS to PASSWD in main menu header
+	bump release #
+0.13	work on resolution to update portion of script
+	update README.md
+	change symlink to /usr/local/bin
+	bump release #
+0.12	add reboot option to hotspotname
+	add hotspot IP to main menu
+	change hotspot status wording on main menu
+	create menu item in setup for main menu
+	add warning message to manageip script
+	add description to disable script
+	bump release #
+0.11	update symlink name
+	bump release #
+0.10	create changelog
+	create disable hotspot script
+	create enable hotspot script
+	create hotspotname script
+	create manage-ip script 
+	create knowssid script
+	initial commit

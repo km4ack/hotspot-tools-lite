@@ -1,0 +1,32 @@
+#!/bin/bash
+
+#setup script for hotspot tools
+#20200221 km4ack
+
+DIR=$HOME/hotspot-tools
+
+#move menu file to menu folder
+#chmod all files
+#remove this script
+cd $DIR
+chmod +x disable enable hotspot-menu hotspotname knowssid manage-ip wificonnect
+#create symlink in bin folder to use in pi main menu
+sudo ln -sf $DIR/hotspot-menu /usr/local/bin/Hotspot-Tools
+#create symlink on desktop
+ln -sf $DIR/hotspot-menu $HOME/Desktop/Hotspot-Tools
+
+#create menu item for hotspot tools
+cat > hotspot-tools.desktop <<EOF
+[Desktop Entry]
+Name=Hotspot Tools
+GenericName=Tools to Manage AutoHotSpot
+Comment=Tools to Manage AutoHotSpot
+Exec=/usr/local/bin/Hotspot-Tools
+Icon=/home/pi/hotspot-tools/logo.png
+Terminal=true
+Type=Application
+Categories=Network;HamRadio;
+EOF
+
+sudo mv $DIR/hotspot-tools.desktop /usr/share/applications/
+
