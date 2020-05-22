@@ -3,21 +3,20 @@
 #script to list known ssid's
 #20200222
 
-DIR=$HOME/hotspot-tools
+DIR=$HOME/hotspot-tools-lite
 VER=$(cat $DIR/changelog | grep version= | sed 's/version=//')
-HS=$(systemctl is-active autohotspot)
+HS=$(systemctl is-enabled autohotspot)
+HSR=$(systemctl is-active autohotspot)
 CURRENTNAME=$(sudo cat /etc/hostapd/hostapd.conf | grep ssid= | head -1 | sed 's/ssid=//')
 CURRENTPASS=$(sudo cat /etc/hostapd/hostapd.conf | grep wpa_passphrase= | sed 's/wpa_passphrase=//')
 HSIP=$(cat /usr/bin/autohotspotN | grep "ip a add" | sed 's/ip\ a\ add\ //' | sed 's/\/24.*$//' | tr -d " ")
 
-if [ $HS = 'active' ]
+if [ $HSR = 'inactive' ]
 then
-HS=enabled
-elif [ $HS = 'inactive' ]
-then
-HS=disabled
+HS="STOPPED ($HS)"
+else
+HS="RUNNING ($HS)"
 fi
-
 
 clear;echo
 echo "Hotspot Tools v"$VER" by KM4ACK"

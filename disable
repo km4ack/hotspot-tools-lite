@@ -3,8 +3,8 @@
 #script to disable hotspot
 #20200221
 clear;echo;echo
-STATUS=$(systemctl is-active autohotspot)
-if [ $STATUS = 'inactive' ]
+STATUS=$(systemctl is-enabled autohotspot)
+if [ $STATUS = 'disabled' ]
 then
 echo
 echo "Hotspot already disabled"
@@ -44,5 +44,4 @@ echo
 echo "No changes made"
 sleep 2
 fi
-
 

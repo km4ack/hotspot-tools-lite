@@ -8,9 +8,9 @@ or by using the [Build-a-Pi](https://github.com/km4ack/pi-build) script.
 
 # Install
 
-     git clone https://github.com/km4ack/hotspot-tools.git $HOME/hotspot-tools 
+     git clone https://github.com/km4ack/hotspot-tools-lite.git $HOME/hotspot-tools-lite 
 
-     cd ~/hotspot-tools
+     cd ~/hotspot-tools-lite
 
      bash setup
 

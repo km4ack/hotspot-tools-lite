@@ -9,13 +9,7 @@
 
 mkdir -p $HOME/temp
 TEMPFILE=$HOME/temp/tempwifi
-HS=$(systemctl is-active autohotspot)
-if [ $HS = 'active' ]
-then
-HSS=ACTIVE
-else
-HSS=INACTIVE
-fi
+HS=$(systemctl is-enabled autohotspot)
 
 ADD () {
 # Generate List of Available SSIDs
@@ -72,11 +66,11 @@ key_mgmt=WPA-PSK
 EOF
 cat $TEMPFILE | tee -a /etc/wpa_supplicant/wpa_supplicant.conf
 rm $TEMPFILE
-	if [ $HSS = 'ACTIVE' ]
+	if [ $HS = 'enabled' ]
 	then
 	echo "attempting to connect to new wifi"
 	/usr/bin/autohotspotN
-	elif [ $HSS = 'INACTIVE' ]
+	elif [ $HSS = 'disabled' ]
 	then
 	killall wpa_supplicant
 	sleep 1
@@ -156,21 +150,4 @@ fi
 }
 
 CHOICES
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 

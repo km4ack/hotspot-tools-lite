@@ -6,13 +6,14 @@
 
 DHCP=$(cat /var/lib/misc/dnsmasq.leases)
 HSS=$(cat /usr/bin/autohotspotN | grep "ip a add" | awk '{ print $4 }' | sed 's/\/24//')
-CIP=$(ifconfig | grep -A 1 wlan0 | grep inet | awk '{ print $2 }')
+CIP=$(ip address show dev wlan0 | grep -v inet6 | grep inet | awk '{ print $2 }' | sed 's/\/24//')
+#CIP=$(ifconfig | grep -A 1 wlan0 | grep inet | awk '{ print $2 }')
 
 if [ $HSS = $CIP ]
 then
-HSS=ACTIVE
+HSS=ACTIVATED
 else
-HSS=INACTIVE
+HSS=DEACTIVATED
 fi
 
 clear;echo;echo
@@ -20,7 +21,7 @@ echo "List of Current DHCP Addresses"
 echo "$DHCP" | awk '{ print $3" "$4" "$5 }'
 echo;echo
 read -p "Flush DHCP Leases? y/n " ANS
-if [ $HSS = 'ACTIVE' ] && [ $ANS = 'y' ] || [ $ANS = 'Y' ]
+if [ $HSS = 'ACTIVATED' ] && [ $ANS = 'y' ] || [ $ANS = 'Y' ]
 then
 cat <<EOF
 Hotspot is currently active.
@@ -40,3 +41,4 @@ sudo systemctl start dnsmasq
 echo "flushed"
 sleep 2
 fi
+
