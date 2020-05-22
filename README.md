@@ -1,10 +1,6 @@
 # Hotspot-Tools by KM4ACK
 
-# Description
-
-A collection of tools to manage the hotspot on the raspberry pi.
-The hotspot can be installed [from here](https://youtu.be/qMT-0mz1lkI)
-or by using the [Build-a-Pi](https://github.com/km4ack/pi-build) script.
+As of 21 May 2020, this code will no longer be maintained. Please see v2 instead https://github.com/km4ack/hotspot-tools2
 
 # Install
 
