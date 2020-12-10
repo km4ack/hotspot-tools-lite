@@ -13,9 +13,8 @@ HS=$(systemctl is-enabled autohotspot)
 HSR=$(systemctl is-active autohotspot)
 CURRENTNAME=$(sudo cat /etc/hostapd/hostapd.conf | grep ssid= | head -1 | sed 's/ssid=//')
 CURRENTPASS=$(sudo cat /etc/hostapd/hostapd.conf | grep wpa_passphrase= | sed 's/wpa_passphrase=//')
-HSIP=$(cat /usr/bin/autohotspotN | grep "ip a add" | awk '{ print $4 }' | sed 's/\/24//')
-CIP=$(ip address show dev wlan0 | grep -v inet6 | grep inet | awk '{ print $2 }' | sed 's/\/24//')
-#CIP=$(ifconfig | grep -A 1 wlan0 | grep inet | awk '{ print $2 }')
+HSIP=$(cat /usr/bin/autohotspotN | grep "ip a add" | awk '{ print $4 }' | cut -f 1 -d \/)
+CIP=$(ip address show dev wlan0 | grep -v inet6 | grep inet | awk '{ print $2 }' | cut -f 1 -d \/)
 
 if [ $HSR = 'inactive' ]
 then

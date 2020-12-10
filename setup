@@ -1,7 +1,8 @@
 #!/bin/bash
 
 #setup script for hotspot tools
-#20200221 km4ack
+
+sudo apt -y install xterm
 
 DIR=$HOME/hotspot-tools-lite
 
