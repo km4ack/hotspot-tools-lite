@@ -5,10 +5,10 @@
 #20200221 km4ack
 
 #check if already active
-STATUS=$(systemctl is-active autohotspot)
-if [ $STATUS = "active" ]
+STATUS=$(systemctl is-enabled autohotspot)
+if [ $STATUS = "enabled" ]
 then
-echo "Hotspot already active"
+echo "Hotspot already enabled"
 sleep 2
 exit 0
 fi
@@ -19,7 +19,9 @@ if [ $ANS = 'y' ] || [ $ANS = 'Y' ]
 then
 sudo systemctl enable autohotspot
 
-sudo echo "nohook wpa_supplicant" >> /etc/dhcpcd.conf
+sudo su -c 'echo "nohook wpa_supplicant" >> /etc/dhcpcd.conf'
+# fails on my rpi2
+#sudo echo "nohook wpa_supplicant" >> /etc/dhcpcd.conf
 
 echo "Hotspot Enabled"
 echo "Reboot required to apply changes"
@@ -35,3 +37,4 @@ echo "Nothing Changed"
 sleep 2
 exit 0
 fi
+

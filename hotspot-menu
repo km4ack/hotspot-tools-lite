@@ -3,101 +3,100 @@
 #main menu for hotspot tools
 #20200221 km4ack
 
-DIR=$HOME/hotspot-tools
+DIR=$HOME/hotspot-tools-lite
 VER=$(cat $DIR/changelog | grep version= | sed 's/version=//')
 
 PS3='Please enter your choice: '
 MAINMENU () {
 
-HS=$(systemctl is-active autohotspot)
+HS=$(systemctl is-enabled autohotspot)
+HSR=$(systemctl is-active autohotspot)
 CURRENTNAME=$(sudo cat /etc/hostapd/hostapd.conf | grep ssid= | head -1 | sed 's/ssid=//')
 CURRENTPASS=$(sudo cat /etc/hostapd/hostapd.conf | grep wpa_passphrase= | sed 's/wpa_passphrase=//')
-HSIP=$(cat /usr/bin/autohotspotN | grep "ip a add" | sed 's/ip\ a\ add\ //' | sed 's/\/24.*$//' | tr -d " ")
-HSS=$(cat /usr/bin/autohotspotN | grep "ip a add" | awk '{ print $4 }' | sed 's/\/24//')
-CIP=$(ifconfig | grep -A 1 wlan0 | grep inet | awk '{ print $2 }')
+HSIP=$(cat /usr/bin/autohotspotN | grep "ip a add" | awk '{ print $4 }' | cut -f 1 -d \/)
+CIP=$(ip address show dev wlan0 | grep -v inet6 | grep inet | awk '{ print $2 }' | cut -f 1 -d \/)
 
-if [ $HSS = $CIP ]
+if [ $HSR = 'inactive' ]
 then
-HSS=ACTIVE
+HS1="STOPPED ($HS)"
 else
-HSS=INACTIVE
+HS1="RUNNING ($HS)"
 fi
 
-if [ $HS = 'active' ]
+if [ $HSIP = $CIP ]
 then
-HS=Enabled
-elif [ $HS = 'inactive' ]
-then
-HS=Disabled
+HSS=ACTIVATED
+else
+HSS=DEACTIVATED
 fi
-
 
 clear;echo
 echo "Hotspot Tools v"$VER" by KM4ACK"
 echo 
 echo "------HOTSPOT PARAMETERS------"
-echo "   Status   "$HS
+echo "   Status   "$HS1
 echo "   State    "$HSS
 echo "   SSID     "$CURRENTNAME
 echo "   Password "$CURRENTPASS
 echo "   IP Addr  "$HSIP  
 echo "------------------------------"
 echo
-options=("Change Name/Password" "Run Hotspot" "Disable Hotspot" "Enable Hotspot" "Manage IP" "Manage SSIDs" "Known SSIDs" "DHCP List" "Update" "Exit")
+options=("Change Name/Password" "Run Hotspot" "Disable Hotspot" "Enable Hotspot" "Manage IP" "Manage SSIDs" "Known SSIDs" "DHCP List" "Reload" "Update" "Exit")
 select opt in "${options[@]}"
 do
     case $opt in
         "Change Name/Password")
             $DIR/hotspotname
-	    MAINMENU
+            MAINMENU
             ;;
         "Run Hotspot")
-	    if [ $HS = 'Enabled' ];then
-	    echo "Standby......"
-	    $DIR/runhs
-	    #sudo /usr/bin/autohotspotN
-	    #sleep 4
-	    else
-	    echo "Hotspot is disabled. Please enable and try again."
-	    sleep 3
-	    fi
-	    MAINMENU
+            if [ $HS = 'enabled' ]; then
+                echo "Standby......"
+                $DIR/runhs
+            else
+                echo "Hotspot is disabled. Please enable and try again."
+                sleep 3
+            fi
+            MAINMENU
             ;;
         "Disable Hotspot")
             $DIR/disable
-	    sleep 3
-	    MAINMENU
+            sleep 3
+            MAINMENU
             ;;
-       "Enable Hotspot")
+        "Enable Hotspot")
             $DIR/enable
-	    sleep 3
-	    MAINMENU
+            sleep 3
+            MAINMENU
             ;;
-       "Manage IP")
-	    $DIR/manage-ip
-	    MAINMENU
+        "Manage IP")
+            $DIR/manage-ip
+            MAINMENU
             ;;
-       "Manage SSIDs")
+        "Manage SSIDs")
             sudo $DIR/wificonnect
-	    MAINMENU
+            MAINMENU
             ;;
-       "Known SSIDs")
+        "Known SSIDs")
             $DIR/knowssid
-	    MAINMENU
+            MAINMENU
             ;;
-       "DHCP List")
+        "DHCP List")
             $DIR/dhcp
-	    MAINMENU
+            MAINMENU
             ;;
-       "Update")
-	    echo "checking for updates"
+        "Reload")
+            MAINMENU
+            ;;
+        "Update")
+            echo "checking for updates"
             cd $DIR
-	    git fetch --all
-	    git reset --hard origin/dev
-	    bash setup
-	    echo "Please restart HotSpot-Tools script to see changes."
-  	    read -n 1 -s -r -p "Press any key to continue"
-	    MAINMENU
+            git fetch --all
+            git reset --hard origin/master
+            bash setup
+            echo "Please restart HotSpot-Tools script to see changes."
+  	        read -n 1 -s -r -p "Press any key to continue"
+            MAINMENU
             ;;
         "Exit")
             exit 0
@@ -108,10 +107,4 @@ done
 }
 
 MAINMENU
-
-
-
-
-
-
 
