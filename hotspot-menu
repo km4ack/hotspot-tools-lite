@@ -3,7 +3,7 @@
 #main menu for hotspot tools
 #20200221 km4ack
 
-DIR=$HOME/hotspot-tools
+DIR=$HOME/hotspot-tools-lite
 VER=$(cat $DIR/changelog | grep version= | sed 's/version=//')
 
 PS3='Please enter your choice: '
