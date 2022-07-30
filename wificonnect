@@ -100,12 +100,12 @@ echo "$SSID"
 echo;echo
 read -p "Name of SSID to remove or exit to quit " RSSID
 
-if [ $RSSID = 'exit' ]
+if [ "$RSSID" = 'exit' ]
 then
 exit 0
 fi
 
-EXIST=$(echo $SSID | grep $RSSID)
+EXIST=$(echo $SSID | grep "$RSSID")
 if [ -z "$EXIST" ]
 then
 cat <<EOF
