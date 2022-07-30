@@ -3,7 +3,7 @@
 #script to list known ssid's
 #20200222
 
-DIR=$HOME/hotspot-tools
+DIR=$(pwd)
 VER=$(cat $DIR/changelog | grep version= | sed 's/version=//')
 HS=$(systemctl is-active autohotspot)
 CURRENTNAME=$(sudo cat /etc/hostapd/hostapd.conf | grep ssid= | head -1 | sed 's/ssid=//')
